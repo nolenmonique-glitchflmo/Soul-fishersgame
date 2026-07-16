@@ -5,29 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prayer Court — The Soulfishers vs. The Fallen Ones</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #1a0030; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: 'Arial Black', Arial, sans-serif; color: #fff; overflow: hidden; }
-  #header { text-align: center; margin-bottom: 8px; }
-  #header h1 { font-size: 22px; color: #FFD700; text-shadow: 0 0 20px #FFD700, 0 0 40px #FFD700; letter-spacing: 3px; }
-  #header p { font-size: 11px; color: #cc99ff; letter-spacing: 2px; margin-top: 2px; }
-  #scoreboard { display: flex; align-items: center; justify-content: center; gap: 30px; margin-bottom: 8px; background: rgba(255,215,0,0.07); border: 2px solid #FFD700; border-radius: 12px; padding: 8px 30px; }
-  .team-score { text-align: center; }
-  .team-name { font-size: 11px; letter-spacing: 1px; margin-bottom: 2px; }
-  .soul-name { color: #FFD700; } .fallen-name { color: #cc66ff; }
-  .score { font-size: 36px; font-weight: 900; }
-  .soul-score { color: #FFD700; text-shadow: 0 0 10px #FFD700; }
-  .fallen-score { color: #cc66ff; text-shadow: 0 0 10px #cc66ff; }
-  #timer { font-size: 20px; color: #fff; font-weight: 900; text-align: center; min-width: 60px; }
-  #timer.urgent { color: #ff4444; animation: pulse 0.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  #gameCanvas { border: 3px solid #FFD700; border-radius: 8px; box-shadow: 0 0 40px rgba(255,215,0,0.4), 0 0 80px rgba(150,0,255,0.2); display: block; }
-  #controls { margin-top: 8px; font-size: 11px; color: #aa88cc; text-align: center; letter-spacing: 1px; }
-  #message { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(10,0,30,0.95); border: 2px solid #FFD700; border-radius: 16px; padding: 30px 50px; text-align: center; z-index: 10; min-width: 320px; }
-  #message h2 { color: #FFD700; font-size: 26px; margin-bottom: 10px; }
-  #message p { color: #ccc; font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
-  #message button { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; border: none; padding: 12px 35px; font-size: 16px; font-weight: 900; border-radius: 50px; cursor: pointer; letter-spacing: 1px; transition: transform 0.1s; }
-  #message button:hover { transform: scale(1.05); }
-  #points-badge { margin-top: 6px; font-size: 12px; color: #FFD700; text-align: center; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#1a0030; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; font-family:'Arial Black',Arial,sans-serif; color:#fff; overflow:hidden; }
+#header { text-align:center; margin-bottom:8px; }
+#header h1 { font-size:22px; color:#FFD700; text-shadow:0 0 20px #FFD700,0 0 40px #FFD700; letter-spacing:3px; }
+#header p { font-size:11px; color:#cc99ff; letter-spacing:2px; margin-top:2px; }
+#scoreboard { display:flex; align-items:center; justify-content:center; gap:30px; margin-bottom:8px; background:rgba(255,215,0,0.07); border:2px solid #FFD700; border-radius:12px; padding:8px 30px; }
+.team-score { text-align:center; }
+.team-name { font-size:11px; letter-spacing:1px; margin-bottom:2px; }
+.soul-name { color:#FFD700; } .fallen-name { color:#cc66ff; }
+.score { font-size:36px; font-weight:900; }
+.soul-score { color:#FFD700; text-shadow:0 0 10px #FFD700; }
+.fallen-score { color:#cc66ff; text-shadow:0 0 10px #cc66ff; }
+#timer { font-size:20px; color:#fff; font-weight:900; text-align:center; min-width:60px; }
+#timer.urgent { color:#ff4444; animation:pulse 0.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+#gameCanvas { border:3px solid #FFD700; border-radius:8px; box-shadow:0 0 40px rgba(255,215,0,0.4),0 0 80px rgba(150,0,255,0.2); display:block; }
+#controls { margin-top:8px; font-size:11px; color:#aa88cc; text-align:center; letter-spacing:1px; }
+#message { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(10,0,30,0.95); border:2px solid #FFD700; border-radius:16px; padding:30px 50px; text-align:center; z-index:10; min-width:320px; }
+#message h2 { color:#FFD700; font-size:26px; margin-bottom:10px; }
+#message p { color:#ccc; font-size:14px; margin-bottom:20px; line-height:1.6; }
+#message button { background:linear-gradient(135deg,#FFD700,#FFA500); color:#000; border:none; padding:12px 35px; font-size:16px; font-weight:900; border-radius:50px; cursor:pointer; letter-spacing:1px; transition:transform 0.1s; }
+#message button:hover { transform:scale(1.05); }
+#scripture-flash { position:absolute; bottom:60px; left:50%; transform:translateX(-50%); color:#FFD700; font-size:13px; font-style:italic; text-align:center; pointer-events:none; text-shadow:0 0 10px #FFD700; opacity:0; transition:opacity 0.3s; max-width:500px; }
 </style>
 </head>
 <body>
@@ -47,36 +47,360 @@
   </div>
 </div>
 <canvas id="gameCanvas" width="620" height="390"></canvas>
-<div id="controls">ARROW KEYS or WASD — Move &nbsp;|&nbsp; SPACE — Shoot &nbsp;|&nbsp; Drive to the hoop — God's team wins!</div>
-<div id="points-badge"></div>
+<div id="controls">ARROW KEYS or WASD — Move &nbsp;|&nbsp; SPACE — Shoot &nbsp;|&nbsp; God's team always wins!</div>
+<div id="scripture-flash" id="scripture-flash"></div>
 <div id="message">
   <h2>&#9962; PRAYER COURT</h2>
-  <p>You are a <strong style="color:#FFD700">Soulfisher</strong>.<br>3 Soulfishers vs 3 Fallen Ones.<br>But God's team always has the advantage.<br>Drive to the hoop. Score. Win.<br><br><em style="color:#aaa">"For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do." — Ephesians 2:10</em></p>
+  <p>You are a <strong style="color:#FFD700">Soulfisher</strong>.<br>God's team always has the advantage.<br>Drive to the hoop. Score. Win.<br><br><em style="color:#aaa">"For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do." — Ephesians 2:10</em></p>
   <button id="startBtn">LET'S GO</button>
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-var canvas=document.getElementById('gameCanvas');var ctx=canvas.getContext('2d');var W=canvas.width;var H=canvas.height;var HOOP_LEFT={x:58,y:H/2};var HOOP_RIGHT={x:W-58,y:H/2};var HOOP_RADIUS=15;var gameRunning=false;var soulScore=0,fallenScore=0,timeLeft=120;var timerInterval=null,pointsEarned=0;var keys={},shootCooldown=0;var ball=null,shooting=false,showBasket=0,basketMsg='';var particles=[];var player={x:W*0.3,y:H/2,speed:3.4,radius:15,hasBall:false,color:'#FFD700'};var teammates=[{x:W*0.25,y:H*0.3,radius:13,color:'#FFF8DC',speed:2.0,ai_timer:10,vx:0,vy:0},{x:W*0.25,y:H*0.7,radius:13,color:'#FFFACD',speed:1.9,ai_timer:35,vx:0,vy:0}];var fallen=[{x:W*0.65,y:H*0.3,radius:13,color:'#6600cc',speed:1.5,ai_timer:0,vx:0,vy:0},{x:W*0.72,y:H*0.55,radius:13,color:'#440088',speed:1.4,ai_timer:25,vx:0,vy:0},{x:W*0.68,y:H*0.72,radius:13,color:'#550099',speed:1.3,ai_timer:50,vx:0,vy:0}];
-function initBall(){ball={x:W/2,y:H/2,radius:10,vx:0,vy:0};player.hasBall=true;shooting=false;}
-function startGame(){document.getElementById('message').style.display='none';soulScore=0;fallenScore=0;timeLeft=120;pointsEarned=0;gameRunning=true;particles=[];player.x=W*0.3;player.y=H/2;player.hasBall=true;teammates[0].x=W*0.25;teammates[0].y=H*0.3;teammates[1].x=W*0.25;teammates[1].y=H*0.7;fallen[0].x=W*0.65;fallen[0].y=H*0.3;fallen[1].x=W*0.72;fallen[1].y=H*0.55;fallen[2].x=W*0.68;fallen[2].y=H*0.72;initBall();updateScoreboard();if(timerInterval)clearInterval(timerInterval);timerInterval=setInterval(tickTimer,1000);requestAnimationFrame(gameLoop);}
-function tickTimer(){if(!gameRunning)return;timeLeft--;var mins=Math.floor(timeLeft/60),secs=timeLeft%60;var t=document.getElementById('timer');t.textContent=mins+':'+(secs<10?'0':'')+secs;t.className=timeLeft<=10?'urgent':'';if(timeLeft<=0)endGame();}
-function endGame(){gameRunning=false;clearInterval(timerInterval);var won=soulScore>=fallenScore;pointsEarned=soulScore*2;var msg=document.getElementById('message');msg.innerHTML='<h2>'+(won?'SOULFISHERS WIN!':'NOT THIS TIME...')+'</h2><p>'+(won?'God\'s team scored <strong style="color:#FFD700">'+soulScore+'</strong> baskets!<br><em style="color:#aaa">"I can do all things through Christ who strengthens me."</em><br><br><strong style="color:#FFD700">+'+pointsEarned+' points!</strong>':'Final: '+soulScore+' - '+fallenScore+'<br><em style="color:#aaa">"Greater is He in you."</em><br><br><strong style="color:#FFD700">+'+(soulScore*2)+' points!</strong>')+'</p><button id="replayBtn">PLAY AGAIN</button>';msg.style.display='block';document.getElementById('points-badge').textContent='Points earned: '+pointsEarned;document.getElementById('replayBtn').addEventListener('click',startGame);}
-function updateScoreboard(){document.getElementById('soul-score').textContent=soulScore;document.getElementById('fallen-score').textContent=fallenScore;}
-document.addEventListener('keydown',function(e){keys[e.key]=true;if(e.key===' '){e.preventDefault();if(gameRunning&&player.hasBall&&!shooting&&shootCooldown<=0)shootBall();}});
-document.addEventListener('keyup',function(e){keys[e.key]=false;});
-document.getElementById('startBtn').addEventListener('click',startGame);
-document.getElementById('startBtn').addEventListener('touchend',function(e){e.preventDefault();startGame();});
-function shootBall(){var dx=HOOP_RIGHT.x-ball.x,dy=HOOP_RIGHT.y-ball.y,dist=Math.sqrt(dx*dx+dy*dy);ball.vx=(dx/dist)*7.5;ball.vy=(dy/dist)*7.5;player.hasBall=false;shooting=true;shootCooldown=55;}
-function spawnParticles(x,y,color){for(var i=0;i<20;i++){var a=Math.random()*Math.PI*2,s=2+Math.random()*3;particles.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:50+Math.random()*20,maxLife:70,color:color,radius:3+Math.random()*4});}}
-function moveAI(a,tx,ty){a.ai_timer--;if(a.ai_timer<=0){var dx=tx-a.x+(Math.random()-.5)*50,dy=ty-a.y+(Math.random()-.5)*50,d=Math.sqrt(dx*dx+dy*dy);if(d>5){a.vx=(dx/d)*a.speed;a.vy=(dy/d)*a.speed;}a.ai_timer=15+Math.floor(Math.random()*25);}a.x+=a.vx;a.y+=a.vy;a.x=Math.max(a.radius,Math.min(W-a.radius,a.x));a.y=Math.max(a.radius,Math.min(H-a.radius,a.y));}
-function gameLoop(){if(!gameRunning)return;var dx=0,dy=0;if(keys['ArrowLeft']||keys['a']||keys['A'])dx-=1;if(keys['ArrowRight']||keys['d']||keys['D'])dx+=1;if(keys['ArrowUp']||keys['w']||keys['W'])dy-=1;if(keys['ArrowDown']||keys['s']||keys['S'])dy+=1;if(dx&&dy){dx*=.707;dy*=.707;}player.x+=dx*player.speed;player.y+=dy*player.speed;player.x=Math.max(player.radius,Math.min(W-player.radius,player.x));player.y=Math.max(player.radius,Math.min(H-player.radius,player.y));if(shootCooldown>0)shootCooldown--;if(player.hasBall){ball.x=player.x+17;ball.y=player.y-11;}if(shooting&&!player.hasBall){ball.x+=ball.vx;ball.y+=ball.vy;var dh=Math.sqrt(Math.pow(ball.x-HOOP_RIGHT.x,2)+Math.pow(ball.y-HOOP_RIGHT.y,2));if(dh<HOOP_RADIUS+ball.radius){soulScore++;pointsEarned+=2;updateScoreboard();spawnParticles(HOOP_RIGHT.x,HOOP_RIGHT.y,'#FFD700');showBasket=90;basketMsg='+2 GOD IS GOOD!';resetBall();}if(ball.x<0||ball.x>W||ball.y<0||ball.y>H)resetBall();}teammates.forEach(function(t){moveAI(t,player.hasBall?HOOP_RIGHT.x-90:ball.x,player.hasBall?H/2:ball.y);});fallen.forEach(function(f){moveAI(f,player.hasBall?player.x:ball.x,player.hasBall?player.y:ball.y);if(player.hasBall){var dd=Math.sqrt(Math.pow(f.x-player.x,2)+Math.pow(f.y-player.y,2));if(dd<f.radius+player.radius+2){player.hasBall=false;ball.x=f.x;ball.y=f.y;var dx2=HOOP_LEFT.x-ball.x,dy2=HOOP_LEFT.y-ball.y,d2=Math.sqrt(dx2*dx2+dy2*dy2);ball.vx=(dx2/d2)*5;ball.vy=(dy2/d2)*5;shooting=true;showBasket=40;basketMsg='STOLEN! Stay strong!';}}}); if(shooting&&!player.hasBall){var dfl=Math.sqrt(Math.pow(ball.x-HOOP_LEFT.x,2)+Math.pow(ball.y-HOOP_LEFT.y,2));if(dfl<HOOP_RADIUS+ball.radius){fallenScore++;updateScoreboard();spawnParticles(HOOP_LEFT.x,HOOP_LEFT.y,'#6600cc');showBasket=60;basketMsg='Fight back!';resetBall();}}particles=particles.filter(function(p){return p.life>0;});particles.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vx*=.95;p.vy*=.95;p.life--;});if(showBasket>0)showBasket--;draw();requestAnimationFrame(gameLoop);}
-function resetBall(){shooting=false;player.hasBall=true;player.x=W*0.3;player.y=H/2;ball.x=player.x+17;ball.y=player.y-11;ball.vx=0;ball.vy=0;}
-function drawCourt(){ctx.fillStyle='#2d0050';ctx.fillRect(0,0,W,H);ctx.strokeStyle='rgba(255,215,0,0.3)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(W/2,0);ctx.lineTo(W/2,H);ctx.stroke();ctx.beginPath();ctx.arc(W/2,H/2,55,0,Math.PI*2);ctx.stroke();ctx.strokeRect(0,H/2-55,115,110);ctx.strokeRect(W-115,H/2-55,115,110);ctx.fillStyle='rgba(255,215,0,0.06)';ctx.font='bold 28px Arial Black';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('HEAVEN COURT',W/2,H/2);}
-function drawHoop(hoop,color,label){ctx.shadowColor=color;ctx.shadowBlur=18;ctx.strokeStyle=color;ctx.lineWidth=3;ctx.beginPath();ctx.arc(hoop.x,hoop.y,HOOP_RADIUS,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;ctx.fillStyle=color;ctx.font='bold 9px Arial';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(label,hoop.x,hoop.y+HOOP_RADIUS+8);}
-function drawFish(x,y,radius,color,isPlayer){ctx.save();ctx.translate(x,y);ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(0,0,radius,radius*0.7,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(-radius*0.6,0);ctx.lineTo(-radius*1.3,-radius*0.6);ctx.lineTo(-radius*1.3,radius*0.6);ctx.closePath();ctx.fill();ctx.fillStyle='#000';ctx.beginPath();ctx.arc(radius*0.35,-radius*0.15,radius*0.18,0,Math.PI*2);ctx.fill();ctx.restore();}
-function drawFallen(f){ctx.fillStyle=f.color;ctx.beginPath();ctx.arc(f.x,f.y,f.radius,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('X',f.x,f.y);}
-function drawBall(){ctx.fillStyle='#FF8C00';ctx.beginPath();ctx.arc(ball.x,ball.y,ball.radius,0,Math.PI*2);ctx.fill();}
-function draw(){ctx.clearRect(0,0,W,H);drawCourt();drawHoop(HOOP_LEFT,'#cc66ff','FALLEN');drawHoop(HOOP_RIGHT,'#FFD700','SOULFISHERS');particles.forEach(function(p){ctx.globalAlpha=p.life/p.maxLife;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);ctx.fill();});ctx.globalAlpha=1;teammates.forEach(function(t){drawFish(t.x,t.y,t.radius,t.color,false);});fallen.forEach(function(f){drawFallen(f);});drawFish(player.x,player.y,player.radius,player.color,true);drawBall();if(showBasket>0){ctx.globalAlpha=Math.min(1,showBasket/20);ctx.fillStyle='#FFD700';ctx.font='bold 24px Arial Black';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(basketMsg,W/2,H/2-70);ctx.globalAlpha=1;}if(player.hasBall&&shootCooldown<=0){ctx.fillStyle='rgba(255,215,0,0.8)';ctx.font='bold 11px Arial';ctx.textAlign='center';ctx.fillText('[SPACE] SHOOT',player.x,player.y-28);}}
+
+var SCRIPTURES = [
+  '"I can do all things through Christ who strengthens me." Phil 4:13',
+  '"Greater is He that is in you." 1 John 4:4',
+  '"No weapon formed against you shall prosper." Isaiah 54:17',
+  '"The Lord is my strength and my shield." Psalm 28:7',
+  '"We are more than conquerors through Him." Romans 8:37',
+  '"God always causes us to triumph in Christ." 2 Cor 2:14',
+  '"The victory is the Lord\'s!" Proverbs 21:31'
+];
+
+var canvas = document.getElementById('gameCanvas');
+var ctx = canvas.getContext('2d');
+var W = canvas.width, H = canvas.height;
+var HOOP_LEFT = {x:58, y:H/2};
+var HOOP_RIGHT = {x:W-58, y:H/2};
+var HOOP_RADIUS = 18;
+
+var gameRunning = false;
+var soulScore = 0, fallenScore = 0, timeLeft = 120;
+var timerInterval = null, pointsEarned = 0;
+var keys = {}, shootCooldown = 0;
+var ball = null, shooting = false, showBasket = 0, basketMsg = '';
+var particles = [];
+var scriptureTimer = 0;
+
+// PLAYER — faster, stronger
+var player = {x:W*0.3, y:H/2, speed:4.5, radius:15, hasBall:false, color:'#FFD700'};
+
+// TEAMMATES — now actively drive toward the hoop to help score
+var teammates = [
+  {x:W*0.25, y:H*0.3, radius:13, color:'#FFF8DC', speed:2.8, ai_timer:10, vx:0, vy:0, mode:'attack'},
+  {x:W*0.25, y:H*0.7, radius:13, color:'#FFFACD', speed:2.6, ai_timer:35, vx:0, vy:0, mode:'attack'}
+];
+
+// FALLEN — slower, less aggressive, and when they steal ball resets to player
+var fallen = [
+  {x:W*0.65, y:H*0.3, radius:13, color:'#6600cc', speed:1.2, ai_timer:0, vx:0, vy:0},
+  {x:W*0.72, y:H*0.55, radius:13, color:'#440088', speed:1.1, ai_timer:25, vx:0, vy:0},
+  {x:W*0.68, y:H*0.72, radius:13, color:'#550099', speed:1.0, ai_timer:50, vx:0, vy:0}
+];
+
+function initBall() {
+  ball = {x:W/2, y:H/2, radius:10, vx:0, vy:0};
+  player.hasBall = true;
+  shooting = false;
+}
+
+function startGame() {
+  document.getElementById('message').style.display = 'none';
+  soulScore = 0; fallenScore = 0; timeLeft = 120; pointsEarned = 0;
+  gameRunning = true; particles = []; shootCooldown = 0; scriptureTimer = 0;
+  player.x = W*0.3; player.y = H/2; player.hasBall = true;
+  teammates[0].x = W*0.25; teammates[0].y = H*0.3;
+  teammates[1].x = W*0.25; teammates[1].y = H*0.7;
+  fallen[0].x = W*0.65; fallen[0].y = H*0.3;
+  fallen[1].x = W*0.72; fallen[1].y = H*0.55;
+  fallen[2].x = W*0.68; fallen[2].y = H*0.72;
+  initBall();
+  updateScoreboard();
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(tickTimer, 1000);
+  requestAnimationFrame(gameLoop);
+}
+
+function tickTimer() {
+  if (!gameRunning) return;
+  timeLeft--;
+  var mins = Math.floor(timeLeft/60), secs = timeLeft%60;
+  var t = document.getElementById('timer');
+  t.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+  t.className = timeLeft <= 10 ? 'urgent' : '';
+  if (timeLeft <= 0) endGame();
+}
+
+function endGame() {
+  gameRunning = false;
+  clearInterval(timerInterval);
+  var won = soulScore >= fallenScore;
+  pointsEarned = soulScore * 3;
+  var msg = document.getElementById('message');
+  msg.innerHTML = '<h2>' + (won ? 'SOULFISHERS WIN!' : 'KEEP FIGHTING!') + '</h2><p>' +
+    (won
+      ? 'God\'s team scored <strong style="color:#FFD700">' + soulScore + '</strong> baskets!<br>The Fallen Ones never stood a chance.<br><em style="color:#aaa">"We are more than conquerors through Him." Romans 8:37</em><br><br><strong style="color:#FFD700">+' + pointsEarned + ' points earned!</strong>'
+      : 'Final: ' + soulScore + ' - ' + fallenScore + '<br><em style="color:#aaa">"Greater is He that is in you." 1 John 4:4</em><br><br><strong style="color:#FFD700">+' + (soulScore*3) + ' points earned!</strong>'
+    ) + '</p><button id="replayBtn">PLAY AGAIN</button>';
+  msg.style.display = 'block';
+  document.getElementById('replayBtn').addEventListener('click', startGame);
+  document.getElementById('replayBtn').addEventListener('touchend', function(e){ e.preventDefault(); startGame(); });
+}
+
+function updateScoreboard() {
+  document.getElementById('soul-score').textContent = soulScore;
+  document.getElementById('fallen-score').textContent = fallenScore;
+}
+
+function flashScripture() {
+  var el = document.getElementById('scripture-flash');
+  var verse = SCRIPTURES[Math.floor(Math.random() * SCRIPTURES.length)];
+  el.textContent = verse;
+  el.style.opacity = '1';
+  scriptureTimer = 120;
+}
+
+document.addEventListener('keydown', function(e) {
+  keys[e.key] = true;
+  if (e.key === ' ') {
+    e.preventDefault();
+    if (gameRunning && player.hasBall && !shooting && shootCooldown <= 0) shootBall();
+  }
+});
+document.addEventListener('keyup', function(e) { keys[e.key] = false; });
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('startBtn').addEventListener('touchend', function(e){ e.preventDefault(); startGame(); });
+
+function shootBall() {
+  var dx = HOOP_RIGHT.x - ball.x, dy = HOOP_RIGHT.y - ball.y;
+  var dist = Math.sqrt(dx*dx + dy*dy);
+  ball.vx = (dx/dist) * 8;
+  ball.vy = (dy/dist) * 8;
+  player.hasBall = false;
+  shooting = true;
+  shootCooldown = 45;
+}
+
+function spawnParticles(x, y, color) {
+  for (var i = 0; i < 25; i++) {
+    var a = Math.random()*Math.PI*2, s = 2+Math.random()*4;
+    particles.push({x:x, y:y, vx:Math.cos(a)*s, vy:Math.sin(a)*s, life:60+Math.random()*20, maxLife:80, color:color, radius:3+Math.random()*4});
+  }
+}
+
+function moveTeammate(t) {
+  // Teammates actively drive toward the Soulfisher hoop to create scoring opportunities
+  var tx = HOOP_RIGHT.x - 80 + (Math.random()-0.5)*60;
+  var ty = H/2 + (t === teammates[0] ? -70 : 70);
+  t.ai_timer--;
+  if (t.ai_timer <= 0) {
+    var dx = tx - t.x + (Math.random()-0.5)*30;
+    var dy = ty - t.y + (Math.random()-0.5)*30;
+    var d = Math.sqrt(dx*dx+dy*dy);
+    if (d > 5) { t.vx = (dx/d)*t.speed; t.vy = (dy/d)*t.speed; }
+    t.ai_timer = 20 + Math.floor(Math.random()*20);
+  }
+  t.x += t.vx; t.y += t.vy;
+  t.x = Math.max(t.radius, Math.min(W-t.radius, t.x));
+  t.y = Math.max(t.radius, Math.min(H-t.radius, t.y));
+}
+
+function moveFallen(f) {
+  // Fallen chase player but are sluggish — God's team is faster
+  f.ai_timer--;
+  if (f.ai_timer <= 0) {
+    var tx = player.x + (Math.random()-0.5)*80;
+    var ty = player.y + (Math.random()-0.5)*80;
+    var dx = tx - f.x, dy = ty - f.y;
+    var d = Math.sqrt(dx*dx+dy*dy);
+    if (d > 5) { f.vx = (dx/d)*f.speed; f.vy = (dy/d)*f.speed; }
+    f.ai_timer = 25 + Math.floor(Math.random()*30);
+  }
+  f.x += f.vx; f.y += f.vy;
+  f.x = Math.max(f.radius, Math.min(W-f.radius, f.x));
+  f.y = Math.max(f.radius, Math.min(H-f.radius, f.y));
+}
+
+function gameLoop() {
+  if (!gameRunning) return;
+
+  // Player movement
+  var dx = 0, dy = 0;
+  if (keys['ArrowLeft']||keys['a']||keys['A']) dx -= 1;
+  if (keys['ArrowRight']||keys['d']||keys['D']) dx += 1;
+  if (keys['ArrowUp']||keys['w']||keys['W']) dy -= 1;
+  if (keys['ArrowDown']||keys['s']||keys['S']) dy += 1;
+  if (dx && dy) { dx *= 0.707; dy *= 0.707; }
+  player.x += dx * player.speed;
+  player.y += dy * player.speed;
+  player.x = Math.max(player.radius, Math.min(W-player.radius, player.x));
+  player.y = Math.max(player.radius, Math.min(H-player.radius, player.y));
+
+  if (shootCooldown > 0) shootCooldown--;
+  if (player.hasBall) { ball.x = player.x+17; ball.y = player.y-11; }
+
+  // Ball physics
+  if (shooting && !player.hasBall) {
+    ball.x += ball.vx; ball.y += ball.vy;
+    var dh = Math.sqrt(Math.pow(ball.x-HOOP_RIGHT.x,2)+Math.pow(ball.y-HOOP_RIGHT.y,2));
+    if (dh < HOOP_RADIUS + ball.radius) {
+      soulScore++; pointsEarned += 3;
+      updateScoreboard();
+      spawnParticles(HOOP_RIGHT.x, HOOP_RIGHT.y, '#FFD700');
+      showBasket = 90;
+      basketMsg = '+3 GOD IS GOOD!';
+      flashScripture();
+      resetBall();
+    }
+    if (ball.x < 0 || ball.x > W || ball.y < 0 || ball.y > H) resetBall();
+  }
+
+  // Teammates move offensively
+  teammates.forEach(function(t) { moveTeammate(t); });
+
+  // Fallen move — sluggish chase
+  fallen.forEach(function(f) {
+    moveFallen(f);
+    // If they touch player with ball — ball resets to player (no fallen score)
+    if (player.hasBall) {
+      var dd = Math.sqrt(Math.pow(f.x-player.x,2)+Math.pow(f.y-player.y,2));
+      if (dd < f.radius + player.radius + 2) {
+        // Rebuke the steal — ball stays with God's team, just resets position
+        showBasket = 35;
+        basketMsg = 'Rebuked! Stay strong!';
+        resetBall();
+      }
+    }
+  });
+
+  // Fallen cannot score — if ball goes near their hoop, reset to player
+  if (shooting && !player.hasBall) {
+    var dfl = Math.sqrt(Math.pow(ball.x-HOOP_LEFT.x,2)+Math.pow(ball.y-HOOP_LEFT.y,2));
+    if (dfl < HOOP_RADIUS + ball.radius) {
+      // Fallen ones blocked — no score, ball back to God's team
+      showBasket = 40;
+      basketMsg = 'The Lord blocked it!';
+      resetBall();
+    }
+  }
+
+  // Scripture flash timer
+  if (scriptureTimer > 0) {
+    scriptureTimer--;
+    if (scriptureTimer === 0) document.getElementById('scripture-flash').style.opacity = '0';
+  }
+
+  // Particles
+  particles = particles.filter(function(p){ return p.life > 0; });
+  particles.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.vx*=0.95; p.vy*=0.95; p.life--; });
+  if (showBasket > 0) showBasket--;
+
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+function resetBall() {
+  shooting = false;
+  player.hasBall = true;
+  player.x = W*0.3; player.y = H/2;
+  ball.x = player.x+17; ball.y = player.y-11;
+  ball.vx = 0; ball.vy = 0;
+}
+
+function drawCourt() {
+  ctx.fillStyle = '#2d0050';
+  ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle = 'rgba(255,215,0,0.3)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
+  ctx.beginPath(); ctx.arc(W/2,H/2,55,0,Math.PI*2); ctx.stroke();
+  ctx.strokeRect(0,H/2-55,115,110);
+  ctx.strokeRect(W-115,H/2-55,115,110);
+  ctx.fillStyle = 'rgba(255,215,0,0.06)';
+  ctx.font = 'bold 28px Arial Black';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('HEAVEN COURT', W/2, H/2);
+}
+
+function drawHoop(hoop, color, label) {
+  ctx.shadowColor = color; ctx.shadowBlur = 20;
+  ctx.strokeStyle = color; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.arc(hoop.x, hoop.y, HOOP_RADIUS, 0, Math.PI*2); ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = color; ctx.font = 'bold 9px Arial';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  ctx.fillText(label, hoop.x, hoop.y+HOOP_RADIUS+6);
+}
+
+function drawFish(x, y, radius, color, isPlayer) {
+  if (isPlayer) { ctx.shadowColor = '#FFD700'; ctx.shadowBlur = 25; }
+  else { ctx.shadowColor = color; ctx.shadowBlur = 8; }
+  ctx.save(); ctx.translate(x,y);
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.ellipse(0,0,radius,radius*0.7,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-radius*0.6,0); ctx.lineTo(-radius*1.3,-radius*0.6); ctx.lineTo(-radius*1.3,radius*0.6); ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(radius*0.35,-radius*0.15,radius*0.18,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(radius*0.37,-radius*0.17,radius*0.07,0,Math.PI*2); ctx.fill();
+  if (isPlayer) {
+    ctx.fillStyle = 'rgba(255,215,0,0.7)';
+    ctx.beginPath(); ctx.moveTo(0,-radius*0.6); ctx.lineTo(radius*0.3,-radius*1.1); ctx.lineTo(-radius*0.3,-radius*0.6); ctx.closePath(); ctx.fill();
+  }
+  ctx.restore(); ctx.shadowBlur = 0;
+}
+
+function drawFallen(f) {
+  ctx.shadowColor = f.color; ctx.shadowBlur = 10;
+  ctx.fillStyle = f.color;
+  ctx.beginPath(); ctx.arc(f.x,f.y,f.radius,0,Math.PI*2); ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(150,0,255,0.4)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(f.x,f.y,f.radius+3,0,Math.PI*2); ctx.stroke();
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Arial';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('X', f.x, f.y);
+}
+
+function drawBall() {
+  ctx.shadowColor = '#FF8C00'; ctx.shadowBlur = 12;
+  ctx.fillStyle = '#FF8C00';
+  ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.radius,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#7B3F00'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(ball.x,ball.y,ball.radius,0,Math.PI*2); ctx.stroke();
+  ctx.shadowBlur = 0;
+}
+
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  drawCourt();
+  drawHoop(HOOP_LEFT, '#cc66ff', 'FALLEN');
+  drawHoop(HOOP_RIGHT, '#FFD700', 'SOULFISHERS');
+  particles.forEach(function(p){
+    ctx.globalAlpha = p.life/p.maxLife;
+    ctx.fillStyle = p.color;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.radius,0,Math.PI*2); ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  teammates.forEach(function(t){ drawFish(t.x,t.y,t.radius,t.color,false); });
+  fallen.forEach(function(f){ drawFallen(f); });
+  drawFish(player.x,player.y,player.radius,player.color,true);
+  drawBall();
+  if (showBasket > 0) {
+    ctx.globalAlpha = Math.min(1, showBasket/20);
+    ctx.fillStyle = '#FFD700';
+    ctx.font = 'bold 22px Arial Black';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.shadowColor = '#FFD700'; ctx.shadowBlur = 20;
+    ctx.fillText(basketMsg, W/2, H/2-70);
+    ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+  }
+  if (player.hasBall && shootCooldown <= 0) {
+    ctx.fillStyle = 'rgba(255,215,0,0.8)';
+    ctx.font = 'bold 11px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('[SPACE] SHOOT', player.x, player.y-28);
+  }
+}
+
 });
 </script>
 </body>
